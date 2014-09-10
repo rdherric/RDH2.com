@@ -1,0 +1,40 @@
+﻿@using RDH2.Web.DataModel.Model
+@model Video
+
+@{
+    ViewBag.Title = "RDH2.COM | Show Video";
+}
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/swfobject.js")"></script>
+<div id="playercontainer">
+     You need Flash player 8+ and JavaScript enabled to view this video.
+</div>
+<h2>@this.Model.Title</h2>
+
+<script type="text/javascript">
+    var playerName = "ytplayer";
+    var params = { allowScriptAccess: "always" };
+    var atts = { id: playerName };
+    swfobject.embedSWF("http://www.youtube.com/v/@this.Model.VideoID?enablejsapi=1&playerapiid=ytplayer&version=3",
+                       "playercontainer", "640", "480", "8", null, null, params, atts);
+
+    function onYouTubePlayerReady(playerID) {
+        //Get a reference to the player
+        var player = document.getElementById(playerName);
+
+        //Play the video
+        if (player) {
+            player.playVideo();
+        }
+    }
+
+    function onVideoWindowClose() {
+        //Get a reference to the player
+        var player = document.getElementById(playerName);
+
+        //Stop the video
+        if (player) {
+            player.stopVideo();
+        }
+    }
+</script>

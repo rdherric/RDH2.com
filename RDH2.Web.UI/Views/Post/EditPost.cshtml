@@ -1,0 +1,55 @@
+﻿@model RDH2.Web.DataModel.Model.Post
+
+@{
+    ViewBag.Title = "RDH2.COM | Edit Post";
+}
+
+<h2>edit post</h2>
+<div id="post-form">
+    <table width="100%">
+        <tr>
+            <td class="title">Post Title: </td>
+            <td><input id="Title" name="Title" type="text" class="text-box" value="@this.Model.Title" required validationMessage="Please enter a Post Title" /></td>
+        </tr>
+        <tr>
+            <td class="title" valign="top">Body: </td>
+            <td>
+                @(Html.Kendo().EditorFor(p => p.Body)
+                              .Name("PostBody")
+                              .ImageBrowser(config => config
+                                    .Create("Create", "ImageBrowser")
+                                    .Destroy("Destroy", "ImageBrowser")
+                                    .Image("~/Content/Images/Upload/{0}")
+                                    .Read("Read", "ImageBrowser")
+                                    .Thumbnail("Thumbnail", "ImageBrowser")
+                                    .Upload("Upload", "ImageBrowser"))
+                              .HtmlAttributes(new 
+                                { 
+                                    style = "height: 500px; width: 100%;", 
+                                    required = "required",
+                                    validationMessage = "Please enter a Post Body"
+                                }))
+            </td>
+        </tr>
+        <tr>
+            <td class="title">Tags (space delimited): </td>
+            <td>@Html.EditorFor(p => p.Tags)</td>
+        </tr>
+        <tr>
+            <td>@Html.HiddenFor(p => p.ID)</td>
+            <td>
+                <div class="button-toolbar">
+                    <a id="delete-button" class="k-button k-button-icon"><span class="k-icon k-delete"></span> Delete</a>
+                    <a id="draft-button" class="k-button k-button-icon"><span class="k-icon k-update"></span> Save as Draft</a>
+                    <a id="publish-button" class="k-button k-button-icon"><span class="k-icon k-add"></span> Publish</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<br />
+
+@section Scripts
+{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/RDH2_EditPost.js")"></script>
+}

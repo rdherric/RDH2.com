@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Site.css")" />
+    <link rel="stylesheet" type="text/css" href="http://cdn.kendostatic.com/2013.1.319/styles/kendo.common.min.css" />
+    <link rel="stylesheet" type="text/css" href="http://cdn.kendostatic.com/2013.1.319/styles/kendo.uniform.min.css" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="http://cdn.kendostatic.com/2013.1.319/js/kendo.web.min.js"></script>
+    <script type="text/javascript" src="http://cdn.kendostatic.com/2013.1.319/js/kendo.aspnetmvc.min.js"></script>
+</head>
+<body>
+    <div id="login-rss">
+        @Html.Partial("LogInLinkPartial")
+        <span>|</span>
+        <a href="@Url.Action("Index", "Atom")">
+            <img alt="RSS" src="/Content/Images/feed-icon-14x14.png" style="vertical-align: middle;" />
+        </a>
+    </div>
+    <div id="header">
+        <div class="center">
+            @Html.Partial("MenuPartial")
+        </div>
+    </div>
+    <div class="center">
+        <div id="message"></div>
+        @RenderBody()
+    </div>
+    <div id="footer">
+        <div class="center">
+            All Content Copyright &copy; 2012 Robert D. Herrick II
+        </div>
+    </div>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/RDH2_Home.js")"></script>
+    @RenderSection("Scripts", false)
+</body>
+</html>

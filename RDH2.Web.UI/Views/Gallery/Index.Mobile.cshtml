@@ -1,0 +1,74 @@
+﻿@using System.IO;
+@using RDH2.Web.DataModel.Model
+@using RDH2.Web.UI.Controllers;
+@using RDH2.Web.UI.Models
+@model GalleryViewModel
+
+@{
+    ViewBag.Title = "RDH2.COM | Galleries";
+}
+
+@if (this.Model.SelectedGallery.ID == -1)
+{
+    <ul data-role="listview">
+        <li>
+            recent activity
+            <ul data-role="listview" data-theme="a">
+                @foreach (Gallery g in this.Model.RecentActivity)
+                {
+                    RenderGallery(g);
+                }
+            </ul>
+        </li>
+        @foreach (Gallery g in this.Model.AllGalleries.OrderBy(cg => cg.Name))
+        {
+            RenderGallery(g);
+        }
+    </ul>
+}
+else
+{
+    <h2>@this.Model.SelectedGallery.Name</h2>
+    if (this.Model.SelectedGallery.Photos != null && this.Model.SelectedGallery.Photos.Count > 0)
+    {
+        foreach (Photo p in this.Model.SelectedGallery.Photos)
+        {
+            <a data-rel="external" href="@Url.Action("Show", "Photo", new { photoID = p.ID })">
+                <img class="gallery-photo" alt="@p.Title"
+                     src="@Url.Content(Path.Combine(PhotoController.BasePath, p.Gallery.FullPath, p.ThumbnailPath))" />
+            </a>
+        }
+    }
+}
+
+@functions
+{
+    //Format string for the LI elements
+    readonly String fmt = "<li><a href=\"{1}\">{0}</a>";
+
+    void RenderGallery(Gallery g)
+    {
+        //Put out the name of the Parent Gallery
+        this.Output.WriteLine(String.Format(fmt, g.Name, 
+            Url.Action("Show", "Gallery", new { input = g.FullPath })));
+        
+        //If there are child Galleries, add them
+        if (g.Galleries != null && g.Galleries.Count > 0)
+        {
+            //Open the list of children
+            this.Output.WriteLine("<ul data-role=\"listview\" data-theme=\"a\">");
+            
+            //Add the children
+            foreach (Gallery cg in g.Galleries.OrderByDescending(cg => cg.Created))
+            {
+                RenderGallery(cg);
+            }
+            
+            //Close the list of children
+            this.Output.WriteLine("</ul>"); 
+        }
+        
+        //Close the LI
+        this.Output.WriteLine("</li>");
+    }
+}

@@ -1,0 +1,10 @@
+﻿div.menu 
+{
+    background-color: black;
+    text-align: center;
+}
+
+img.gallery-photo, img.gallery-video
+{
+    margin: 5px 5px 5px 5px;
+}

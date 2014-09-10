@@ -1,0 +1,89 @@
+﻿@using RDH2.Web.DataModel.Model
+@using RDH2.Web.UI.Infrastructure
+@using RDH2.Web.UI.Models
+@model GalleryViewModel
+
+@{
+    ViewBag.Title = "RDH2.COM | Galleries";
+}
+
+@if (AccountModelBinder.Current != null)
+{
+    <div class="button-toolbar">
+        <a class="k-button k-button-icon" href="@Url.Action("Create", "Gallery")"><span class="k-icon k-add"></span> New Gallery</a>
+        
+        @if (this.Model.SelectedGallery.ID > 0)
+        {
+            <a class="k-button k-button-icon" href="@Url.Action("Edit", "Gallery", new { id = this.Model.SelectedGallery.ID })">
+                <span class="k-icon k-add"></span>
+                Edit Gallery
+            </a>
+        }
+
+        <a class="k-button k-button-icon" href="@Url.Action("EditVideos", "Gallery")"><span class="k-icon k-update"></span> Edit Videos</a>
+    </div>
+}
+
+<h2>galleries</h2>
+<table>
+    <tr>
+        <td class="gallery-treeview" valign="top">
+            @(Html.Kendo().TreeView()
+                .Name("RecentActivity")
+                .Items(item =>
+                    item.Add()
+                        .Action("Index", "Gallery")
+                        .Text("Recent Activity")
+                        .Expanded(true)
+                        .Selected(this.Model.SelectedGallery.ID == -1)
+                        .Items(subItem =>
+                        {
+                            foreach (Gallery g in this.Model.RecentActivity)
+                            {
+                                subItem.Add()
+                                        .Action("Show", "Gallery", new { input = g.FullPath })
+                                        .Text(g.Name)
+                                        .Selected(g.ID == this.Model.SelectedGallery.ID);
+                            }
+                        })))
+
+            <br />
+
+            @(Html.Kendo().TreeView()
+                .Name("AllGalleries")
+                .BindTo(this.Model.AllGalleries, mappings =>
+                {
+                    mappings.For<Gallery>(binding => binding
+                            .ItemDataBound((item, gallery) =>
+                            {
+                                item.Text = gallery.Name;
+                                HttpCookie cookie = this.Request.Cookies[Url.Encode(gallery.FullPath)];
+                                item.Expanded = (gallery.Expanded || Convert.ToBoolean((cookie != null ? cookie.Value : "false")));
+                                item.Id = gallery.FullPath;
+                                item.Selected = (gallery.ID == this.Model.SelectedGallery.ID);
+                                item.Url = this.Url.Action("Show", "Gallery", new { input = gallery.FullPath });
+                            })
+                            .Children(gallery => gallery.Galleries != null ? gallery.Galleries.OrderByDescending(cg => cg.Created) : null));
+                }))
+        </td>
+        <td class="gallery-content">
+            @Html.Partial("GalleryPartial", this.Model.SelectedGallery)
+        </td>
+    </tr>
+</table>
+
+@section Scripts 
+{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.ba-dotimeout.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.cookie.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/RDH2_ShowGallery.js")"></script>
+
+    @if (String.IsNullOrEmpty(this.Model.VideoID) == false)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("img[name=@this.Model.VideoID]").click();
+            });
+        </script>
+    }
+}

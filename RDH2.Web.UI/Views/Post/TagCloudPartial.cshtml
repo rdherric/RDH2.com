@@ -1,0 +1,9 @@
+﻿@model List<String>
+
+<div id="tag-cloud">
+    <h2>tags</h2>
+    @foreach (String tag in this.Model)
+    {
+        <a href="@Url.Action("Show", "Post", new { input = tag })">@tag</a>
+    }
+</div>

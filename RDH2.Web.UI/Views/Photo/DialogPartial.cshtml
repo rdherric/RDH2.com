@@ -1,0 +1,14 @@
+﻿@using RDH2.Web.UI.Models
+@model PhotoViewModel
+
+@{
+    ViewBag.Title = "RDH2.COM";
+}
+
+<img id="image" alt="@this.Model.Title" src="@this.Model.Path" height="@this.Model.Size.Height" width="@this.Model.Size.Width" />
+<h2>@this.Model.Title</h2>
+
+@section PageInitScript
+{
+    $("#image").fitImage();
+}

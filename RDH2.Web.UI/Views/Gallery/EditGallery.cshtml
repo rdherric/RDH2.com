@@ -1,0 +1,76 @@
+﻿@using RDH2.Web.DataModel.Model
+@using RDH2.Web.UI.Models
+@model EditGalleryViewModel
+
+@{
+    ViewBag.Title = "RDH2.COM | Edit Gallery";
+}
+
+<h2>edit gallery</h2>
+<div id="gallery-form">
+    <table width="100%">
+        <tr>
+            <td class="title">Gallery Name: </td>
+            <td><input id="galleryName" name="galleryName" class="text-box" value="@this.Model.Gallery.Name" required validationMessage="Please enter a Gallery Name" /></td>
+        </tr>
+        <tr>
+            <td class="title">Expanded: </td>
+            <td>@Html.CheckBoxFor(e => e.Gallery.Expanded)</td>
+        </tr>
+        <tr>
+            <td class="title">Include in Recent Activity: </td>
+            <td>@Html.CheckBoxFor(e => e.Gallery.IsRecent)</td>
+        </tr>
+        <tr>
+            <td class="title">Parent Gallery: </td>
+            <td>
+                @(Html.DropDownListFor(e => e.ParentID, 
+                    new SelectList(this.Model.AllGalleries, "ID", "FullName", this.Model.ParentID)))
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.HiddenFor(e => e.Gallery.ID)</td>
+            <td>
+                <div class="button-toolbar">
+                    <a id="delete-gallery-button" class="k-button k-button-icon"><span class="k-icon k-delete"></span> Delete</a>
+                    <a id="save-gallery-button" class="k-button k-button-icon"><span class="k-icon k-add"></span> Save</a>
+                </div>
+            </td>
+        </tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr>
+            <td class="title" valign="top">Upload Photos: </td>
+            <td>
+                <form method="post" action="@Url.Action("Save", "Photo", new { galleryID = this.Model.Gallery.ID })">
+                    <input name="photos" id="photos" type="file" />
+                    <br />
+                    <input type="submit" value="Upload Photos" class="k-button" />
+                </form>
+            </td>
+        </tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr>
+            <td class="title" valign="top">Update Photos: </td>
+            <td id="update-photo-holder">
+                @if (this.Model.Gallery.Photos != null)
+                {
+                    foreach (Photo p in this.Model.Gallery.Photos)
+                    {
+                        @Html.Partial("~/Views/Photo/UpdatePartial.cshtml", p)
+                    }
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <button id="update-photos" class="k-button k-button-icon" type="button"><span class="k-icon k-update"></span> Update All Photos</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+@section Scripts 
+{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/RDH2_EditGallery.js")"></script>
+}

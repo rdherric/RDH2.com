@@ -1,0 +1,21 @@
+﻿@using RDH2.Web.UI.Models
+@model List<EditVideoViewModel>
+
+@{
+    ViewBag.Title = "Edit Videos to Galleries";
+}
+
+<h2>edit videos into galleries</h2>
+
+<button id="update-videos" class="k-button k-button-icon" type="button"><span class="k-icon k-update"></span> Update All Videos</button>
+
+@foreach (EditVideoViewModel evvm in this.Model)
+{
+    @Html.Partial("~/Views/Video/UpdatePartial.cshtml", evvm)
+}
+
+@section Scripts
+{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/RDH2_UpdateVideo.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/RDH2_ShowGallery.js")"></script>
+}

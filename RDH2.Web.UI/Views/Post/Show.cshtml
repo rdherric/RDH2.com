@@ -1,0 +1,37 @@
+﻿@using RDH2.Web.DataModel.Model
+@using RDH2.Web.UI.Infrastructure
+@using RDH2.Web.UI.Models
+@using System.Web.Mvc
+@model PostViewModel
+
+@{
+    ViewBag.Title = "RDH2.COM | View Post";
+}
+
+@Html.Partial("TagCloudPartial", this.Model.Tags)
+
+<div id="post-container">
+    @foreach (Post post in this.Model.Posts)
+    {
+        if (AccountModelBinder.Current != null)
+        {
+            <div class="button-toolbar">
+                <a class="k-button k-button-icon" href="@Url.Action("Edit", "Post", new { ID = post.ID })"><span class="k-icon k-add"></span> Edit Post</a>
+            </div>
+        }
+        <h2>@post.Title@(post.Published == false ? " (unpublished)" : "")</h2>
+        @MvcHtmlString.Create(post.Body)
+    }
+</div>
+
+@Html.Partial("PostCountPartial", this.Model.PostCounts)
+
+@section Scripts
+{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.fitImage.js")"></script>
+    <script type="text/javascript">
+        $(window).on("load resize", function () {
+            $("#post-container img").fitImage();
+        });
+    </script>
+}

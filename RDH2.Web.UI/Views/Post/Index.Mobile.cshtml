@@ -1,0 +1,45 @@
+﻿@using RDH2.Web.DataModel.Model;
+@using RDH2.Web.UI.Models
+@model PostViewModel
+
+@{
+    ViewBag.Title = "RDH2.COM | Posts";
+}
+
+@if (String.IsNullOrEmpty(this.Model.CurrentTag) == true)
+{
+    <ul data-role="listview">
+        <li>
+            recent posts
+            <ul data-role="listview" data-theme="a">
+                @foreach (Post post in this.Model.Posts) 
+                {
+                    <li>
+                        <a href="@Url.Action("Show", "Post", new { input = post.ReducedTitle })">@post.Title</a>
+                    </li>
+                }
+            </ul>
+        </li>
+        <li>
+            tags
+            <ul data-role="listview" data-theme="a">
+                @foreach (String tag in this.Model.Tags)
+                {
+                    <li><a data-rel="external" href="@Url.Action("Show", "Post", new { input = tag })">@tag</a></li>
+                }
+            </ul>
+        </li>
+    </ul>
+}
+else
+{
+    <ul data-role="listview">
+        <li data-role="list-divider">@this.Model.CurrentTag</li>
+        @foreach (Post post in this.Model.Posts) 
+        {
+            <li>
+                <a href="@Url.Action("Show", "Post", new { input = post.ReducedTitle })">@post.Title</a>
+            </li>
+        }
+    </ul>
+}

@@ -1,0 +1,54 @@
+﻿<span id="login-error" style="color: Red;"></span>
+<div id="login-form">
+    <table style="margin: 10px 10px 10px 10px;">
+        <tr>
+            <td class="title">User Name: </td>
+            <td><input id="userName" name="userName" required validationMessage="Please enter your User Name" /></td>
+        </tr>
+        <tr>
+            <td class="title">Password: </td>
+            <td><input id="password" name="password" type="password" required validationMessage="Please enter your Password" /></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <button id="login-button" class="k-button" type="submit"><span class="k-icon k-update"></span> Log In</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script type="text/javascript">
+    //Setup the form validation
+    var validator = $("#login-form").kendoValidator().data("kendoValidator");
+
+    //Setup the Enter keypress
+    $("#userName,#password").keypress(function (e) {
+        if (e.which === 13)
+            $("#login-button").click();
+    });
+
+    //Setup the login button
+    $("#login-button").click(function () {
+        if (validator.validate()) {
+            $.ajax(
+                {
+                    url: "/Account/LogIn",
+                    type: "post",
+                    data: { userName: $("#userName").val(), password: $("#password").val() },
+                })
+            .done(function (data) {
+                if (data.success == true)
+                    window.location.replace(window.location);
+                else
+                    ShowError();
+            })
+            .fail(function () {
+                ShowError();
+            });
+        }
+    });
+
+    function ShowError() {
+        $("#login-error").html("Could not log in to RDH2.COM.<br />Check your user name and password.");
+    }
+</script>

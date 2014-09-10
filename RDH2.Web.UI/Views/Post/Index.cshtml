@@ -1,0 +1,36 @@
+﻿@using RDH2.Web.DataModel.Model;
+@using RDH2.Web.UI.Infrastructure
+@using RDH2.Web.UI.Models
+@model PostViewModel
+
+@{
+    ViewBag.Title = "RDH2.COM | Posts";
+}
+
+@Html.Partial("TagCloudPartial", this.Model.Tags)
+
+<div id="post-container">
+    @if (AccountModelBinder.Current != null)
+    {
+        <div class="button-toolbar">
+            <a href="@Url.Action("Create", "Post")" class="k-button k-button-icon"><span class="k-icon k-add"></span> New Post</a>
+        </div>
+    }
+
+    <h2>recent posts</h2>
+    @foreach (Post post in this.Model.Posts) 
+    {
+        <div class="activity">
+            <span class="title">
+                <a href="@Url.Action("Show", "Post", new { input = post.ReducedTitle })">
+                    @post.Title@(post.Published == false ? " (unpublished)" : "")
+                </a>
+            </span>
+            <div class="posted-by">
+                posted @post.Created by @post.CreatedBy.FirstName @post.CreatedBy.LastName
+            </div>
+        </div>
+    }
+</div>
+
+@Html.Partial("PostCountPartial", this.Model.PostCounts)

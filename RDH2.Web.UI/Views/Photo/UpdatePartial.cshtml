@@ -1,0 +1,18 @@
+﻿@using System.IO
+@using RDH2.Web.DataModel.Model
+@using RDH2.Web.UI.Controllers
+@model Photo
+
+<table>
+    <tr>
+        <td>
+            <img alt="@this.Model.Title" 
+                 src="@Url.Content(Path.Combine(PhotoController.BasePath, this.Model.Gallery.FullPath, this.Model.ThumbnailPath))" />
+        </td>
+        <td class="update-photo">
+            @Html.Hidden("Photo_ID", this.Model.ID)
+            @Html.TextBox("Photo_Title", this.Model.Title, new { @class = "text-box" })
+            <button class="k-button k-button-icon" type="button"><span class="k-icon k-delete"></span>Delete</button>
+        </td>
+    </tr>
+</table>

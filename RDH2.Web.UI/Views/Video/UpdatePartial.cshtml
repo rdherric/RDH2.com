@@ -1,0 +1,18 @@
+﻿@using System.Web.Mvc.Html;
+@using RDH2.Web.UI.Controllers;
+@using RDH2.Web.UI.Models
+@model EditVideoViewModel
+
+<table class="update-single-video">
+    <tr>
+        <td>
+            <img class="gallery-video" alt="@this.Model.Video.Title" name="@this.Model.Video.ID"
+                 src="@String.Format(VideoController.VideoImageURLFmt, this.Model.Video.VideoID)" />
+        </td>
+        <td>
+            @Html.Hidden("Video_ID", this.Model.Video.ID)
+            @(Html.DropDownListFor(evvm => evvm.GalleryID, 
+                new SelectList(this.Model.AllGalleries, "ID", "FullName", this.Model.GalleryID)))
+        </td>
+    </tr>
+</table>

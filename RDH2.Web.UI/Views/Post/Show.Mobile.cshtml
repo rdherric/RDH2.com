@@ -1,0 +1,16 @@
+﻿@using RDH2.Web.DataModel.Model
+@using RDH2.Web.UI.Models
+@using System.Web.Mvc
+@model PostViewModel
+
+@{
+    ViewBag.Title = "RDH2.COM | View Post";
+}
+
+@foreach (Post post in this.Model.Posts)
+{
+    <div style="margin: 5px;">
+        <h2>@post.Title</h2>
+        @MvcHtmlString.Create(post.Body)
+    </div>
+}

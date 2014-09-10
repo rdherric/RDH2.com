@@ -1,0 +1,14 @@
+﻿@using RDH2.Web.DataModel.Model;
+@model List<PostCount>
+
+<div id="post-count-container">
+    <h2>past posts</h2>
+    @foreach (PostCount pc in this.Model)
+    {
+        <div>
+            <a href="@Url.Action("Show", "Post", new { input = pc.Bucket.ToString("MM-yyyy") })">
+                @pc.Bucket.ToString("MMMM, yyyy") (@pc.Count)
+            </a>
+        </div>
+    }
+</div>

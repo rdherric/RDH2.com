@@ -1,0 +1,11 @@
+﻿@using RDH2.Web.UI.Infrastructure;
+@model RDH2.Web.DataModel.Model.Activity
+
+<div class="activity">
+    <span class="title">
+        <a href="@this.Model.ToUrl(this.Url)">@this.Model.FormatTitle()</a>
+    </span>
+    <div class="posted-by">
+        posted @this.Model.ActivityDate by @this.Model.CreatedBy.FirstName @this.Model.CreatedBy.LastName
+    </div>
+</div>

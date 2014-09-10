@@ -1,0 +1,44 @@
+﻿@using System.IO
+@using RDH2.Web.DataModel.Model;
+@using RDH2.Web.UI.Controllers
+@model Gallery
+
+@if (this.Model.Galleries != null && this.Model.Galleries.Count > 0)
+{
+    foreach (Gallery g in this.Model.Galleries.OrderByDescending(cg => cg.Created).ToList())
+    {
+        <div class="gallery-folder">
+            <a href="@Url.Action("Show", "Gallery", new { input = g.FullPath })">
+                <img class="middle-photo" alt="@g.Name" src="/Content/Images/Gallery.png" />
+                <span>
+                    @g.Name 
+                </span>
+            </a>
+        </div>
+    }
+}
+
+@if (this.Model.Videos != null && this.Model.Videos.Count > 0)
+{
+    <div style="clear: both;">
+        <h3>videos</h3>
+        @foreach (Video v in this.Model.Videos)
+        {
+            <img class="gallery-video" alt="@v.Title" name="@v.ID"
+                 src="@String.Format(VideoController.VideoImageURLFmt, v.VideoID)" />
+        }
+    </div>
+}
+
+@if (this.Model.Photos != null && this.Model.Photos.Count > 0)
+{
+    <div style="clear: both;">
+        <h3>photos</h3>
+        <div class="slideshow-link"><a id="slideshow">view photo slide show</a></div>
+        @foreach (Photo p in this.Model.Photos)
+        {
+            <img class="gallery-photo" alt="@p.Title" name="@p.ID" 
+                 src="@Url.Content(Path.Combine(PhotoController.BasePath, p.Gallery.FullPath, p.ThumbnailPath))" />
+        }
+    </div>
+}

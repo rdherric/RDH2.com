@@ -1,0 +1,43 @@
+﻿@model RDH2.Web.UI.Models.ContactFormModel
+
+@{
+    ViewBag.Title = "RDH2.COM | Contact";
+}
+
+<h2>contact the herrick family</h2>
+<div id="contact-form">
+    <table width="100%">
+        <tr>
+            <td class="title">Your Email Address: </td>
+            <td><input id="emailAddress" name="emailAddress" type="email" class="text-box" required maxlength="50" validationMessage="Please enter a valid Email Address" /></td>
+        </tr>
+        <tr>
+            <td class="title">Subject: </td>
+            <td><input id="subject" name="subject" type="text" class="text-box" required maxlength="50" validationMessage="Please enter an Email Subject" /></td>
+        </tr>
+        <tr>
+            <td class="title" valign="top">Body: </td>
+            <td>
+                @(Html.Kendo().Editor()
+                              .Name("body")
+                              .HtmlAttributes(new 
+                                { 
+                                    style = "height: 500px; width: 100%;", 
+                                    required = "required",
+                                    validationMessage = "Please enter an Email Body"
+                                }))
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <button id="contact-submit" class="k-button k-button-icon" type="submit"><span class="k-icon k-update"></span> Send Email</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+@section Scripts 
+{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/RDH2_Contact.js")"></script>
+}

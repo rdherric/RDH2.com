@@ -1,0 +1,17 @@
+﻿@using RDH2.Web.DataModel.Model;
+@using RDH2.Web.UI.Infrastructure
+
+@{
+    Account account = AccountModelBinder.Current;
+}
+
+@if (account != null)
+{
+    <span>Welcome, @account.FirstName @account.LastName</span> 
+    <span>|</span>
+    <a href="@Url.Action("LogOut", "Account", new { returnUrl = this.Request.Url.ToString() })">log out</a>
+}
+else
+{
+    <span id="login-link">log in</span>
+}
